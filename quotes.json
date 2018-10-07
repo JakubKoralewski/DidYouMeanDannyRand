@@ -1,0 +1,28 @@
+{
+  "catches": {
+    "basic": [
+      "iron fist",
+      "sworn enemy of the hand",
+      "danny",
+      "protector of k'un-lun",
+      "protector of kun-lun",
+      "protector of kunlun"
+    ],
+    "hi": "i am danny rand, the immortal iron fist, protector of k'un-lun, sworn enemy of the hand"
+  },
+
+  "answers": {
+    "basic": [
+      "Did you mean **the** Danny Rand? The Immortal Iron Fist, protector of K'un-Lun, sworn enemy of The Hand?",
+      "Are you talking about **the** Danny Rand? The Immortal Iron Fist, protector of K'un-Lun, sworn enemy of The Hand?",
+      "Are we talking about **the** Danny Rand? The Immortal Iron Fist, protector of K'un-Lun, sworn enemy of The Hand?",
+      "Are we talking about the same Danny Rand? The Immortal Iron Fist, protector of K'un-Lun, sworn enemy of The Hand?",
+      "**The** Danny Rand? The Immortal Iron Fist, protector of K'un-Lun, sworn enemy of The Hand?"
+    ],
+
+    "hi": [
+      "Hi. I am DidYouMeanDannyRand, the Mortal Iron Script, protector of the Redditland, sworn enemy of the Shitpost.",
+      "Hello there. I am DidYouMeanDannyRand, the Mortal Iron Script, protector of the Redditland, sworn enemy of the Shitpost."
+    ]
+  }
+}
