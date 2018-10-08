@@ -1,4 +1,5 @@
 import os.path
+import re
 
 def save_as_duplicate(id):
     print(f"Saving id:'{id}' as duplicate",end="")
@@ -8,8 +9,7 @@ def save_as_duplicate(id):
 
 
 def check_if_duplicate(id):
-
-    # if file doesn't exist:
+    # if file containing duplicates doesn't exist:
     # its not a duplicate -> finish execution
     exists = os.path.exists('commented.txt')
     if not exists:
@@ -17,6 +17,17 @@ def check_if_duplicate(id):
     
     with open('commented.txt','r') as commented:
         for otherid in commented:
+            otherid = otherid.strip()
             if otherid==id:
                 return True
+    
+    return False
+
+
+def bold_quote(catch, quote):
+    #p = re.compile(f'{catch}',re.IGNORECASE)
+    bolded = f'**{catch}**'
+    quote = re.sub(catch, bolded, quote)
+    return quote
+    
 
