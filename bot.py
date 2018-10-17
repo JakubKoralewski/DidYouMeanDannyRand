@@ -6,9 +6,6 @@ import re
 
 import praw
 
-from duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
-
-
 async def check_comments(sub):
     print(f'starting in: {sub}')
     for comment in sub.stream.comments(pause_after=0):
@@ -169,4 +166,7 @@ class vars():
 
 
 if __name__ == '__main__':
+    from duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
     asyncio.run(async_main())
+else:
+    from did_you_mean_danny_rand.duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
