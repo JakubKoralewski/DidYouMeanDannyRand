@@ -1,6 +1,5 @@
-#from bot import bot.find_iron_fist
-import did_you_mean_danny_rand.bot as bot
-#from bot import bot.find_iron_fist
+#import did_you_mean_danny_rand.bot as bot
+import repo.bot as bot
 import pytest
 import asyncio
 import re
@@ -39,16 +38,14 @@ async def test_finding_iron_fist(vars):
             print(f'phrase: {phrase}\n_________________________')
             assert result
 
-            
     test_phrases_negative = vars['negative']
     for phrase_list in test_phrases_negative.values():
         for phrase in phrase_list:
             print('asserting negative')
             phrase = bot.delete_quotes(phrase)
             result = await bot.find_iron_fist(text=phrase, id='1', type='c')
-            print(f'phrase: {phrase}') 
+            print(f'phrase: {phrase}')
             assert not result
-
 
 
 def test_quotes():
