@@ -2,4 +2,5 @@
 *.txt
 !tests/
 tests/*/
-
+!.circleci
+#!.circleci/
