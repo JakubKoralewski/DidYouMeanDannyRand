@@ -4,61 +4,87 @@ import os
 import random
 import re
 import praw
+import logging
+
+# set up logging to file - see previous section for more details
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    filename='myapp.log',
+                    filemode='w')
+# define a Handler which writes INFO messages or higher to the sys.stderr
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+# set a format which is simpler for console use
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+# tell the handler to use this format
+console.setFormatter(formatter)
+# add the handler to the root logger
+logging.getLogger('').addHandler(console)
+
+log_answer = lambda answer: logging.info(f'\n_______________________________________\nANSWER:\n {answer}\n_______________________________________')
+
 
 async def check_comments(sub):
-    print(f'starting in: {sub}')
+    logging.info(f'starting in: {sub}')
     for comment in sub.stream.comments(pause_after=0):
         if comment is None:
+            logging.warning('comment is None')
             break
-        print(f'checking {sub}')
+        logging.info(f'checking {sub}')
+
         text = comment.body
         id = comment.id
         yourself = True if comment.author == vars.my_username else False
         if yourself:
+            logging.warning('yourself')
             continue
 
         # Should not reply twice.
         duplicate = is_comment_duplicate('comment', id)
         if duplicate:
+            logging.warning('duplicate')
             continue
 
         # Delete quotes
         text = delete_quotes(text)
-        
 
-        answer = await find_iron_fist(type=comment, text=text, id=id)
+        answer = await find_iron_fist(type='c', text=text, id=id)
         if answer:
-            print(f'\nANSWER:\n {answer}')
+            log_answer(answer)
         else:
-            print('not found')
+            logging.info('not found')
         await asyncio.sleep(0.1)
 
+
 def delete_quotes(text):
+    logging.info('deleting quotes')
     quotes = re.compile(r'(>.*\n)|(>.+$)|(>.+\n)')
     return re.sub(quotes, '', text)
 
 async def check_titles(sub):
+    logging.info('checking titles')
     for post in sub.stream.submissions(pause_after=1):
         if post is None:
+            logging.warning('post is None')
             break
         await title_search(post)
         await asyncio.sleep(0.1)
 
 
 async def title_search(post):
+    logging.info('searching title')
+
     title = post.title
     id = post.id
     duplicate = is_comment_duplicate('title', title)
     if duplicate:
         return False
-    answer = find_iron_fist(type=post, text=title, id=id)
+    answer = await find_iron_fist(type='post', text=title, id=id)
     if answer:
-        print(f'\nANSWER:\n {answer}')
+        log_answer(answer)
     else:
-        print('not found')
-
-# find_iron_fist(thing='comment'/'post', text= comment.body, id = comment.id)
-
+        logging.info('not found')
 
 async def find_iron_fist(**kwargs):
     """ Find an Iron Fist reference in the given text.
@@ -69,9 +95,11 @@ async def find_iron_fist(**kwargs):
         id (str): id to be fed to duplicate functions.
 
     """
+    
     thing = kwargs['type']
     text = kwargs['text']
     id = kwargs['id']
+    logging.info(f'find_iron_fist(type={thing}, text={text}, id={id}')
 
     # Get catch words that are in title.
     all_matches = []
@@ -93,12 +121,12 @@ async def find_iron_fist(**kwargs):
     # because bot should not correct when someone uses the whole catchphrase!
     save_duplicate(thing, id)
     if not all_matches or len(all_matches) >= 3:
-        print('not all_matches or len(all_matches>=3')
-        print(all_matches)
+        logging.info('not all_matches or len(all_matches>=3')
+        logging.info(all_matches)
         return False
 
-    print(all_matches)
-    print('\n\n', text)
+    logging.info(all_matches)
+    logging.info('\n\n'+ text)
 
     for match in all_matches:
         catch = match[0]
@@ -128,7 +156,7 @@ def test_comments():
 
 
 async def async_main():
-
+    logging.info('starting async_main function')
     defenders = vars.reddit.subreddit("Defenders")
     marvelstudios = vars.reddit.subreddit("marvelstudios")
 
@@ -147,12 +175,14 @@ class vars():
                          username=os.environ['REDDIT_USERNAME'], password=os.environ['REDDIT_PASSWORD'])
 
     my_username = reddit.user.me()
-    print(f"Logged in as {my_username}")
+    logging.info(f"Logged in as {my_username}")
 
     # Get triggers, answers from JSON file
-    #with open('quotes.json', 'r') as quotes:
+    # with open('quotes.json', 'r') as quotes:
     with open(os.path.join(os.path.dirname(__file__), 'quotes.json'), 'r') as quotes:
+        logging.info(f'quotes.json opened successfully')
         quotes = json.load(quotes)
+    
     # Things triggering bot:
     all_catches = quotes['catches']
     catches = all_catches['basic']
@@ -165,10 +195,9 @@ class vars():
 
 
 if __name__ == '__main__':
+    logging.info('file opened locally')
     from duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
     asyncio.run(async_main())
 else:
+    logging.info('file imported')
     from bot.duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
-    
-
-

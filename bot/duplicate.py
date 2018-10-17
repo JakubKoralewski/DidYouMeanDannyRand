@@ -1,12 +1,13 @@
 import os
 import praw
 
+
 duplicate_comments = 'duplicate_comments.txt'
 duplicate_titles = 'duplicate_titles.txt'
 
 
 def save_duplicate(thing, id):
-    print(f"Saving {thing}:'{id}' as duplicate", end="")
+    print(f"Saving thing: {thing}, id: '{id}' as duplicate", end="")
     if thing in ['comment', 'c']:
         duplicate_file = duplicate_comments
     elif thing in ['post', 'title', 'p', 't']:

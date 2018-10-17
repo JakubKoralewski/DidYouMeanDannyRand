@@ -1,4 +1,3 @@
-#import did_you_mean_danny_rand.bot as bot
 import bot.bot as bot
 import pytest
 import asyncio
