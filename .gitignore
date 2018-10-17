@@ -1,6 +1,9 @@
 /*/
 *.txt
 !tests/
+!bot/
+bot/*.txt
+bot/*/
 tests/*/
 !.circleci
 #!.circleci/

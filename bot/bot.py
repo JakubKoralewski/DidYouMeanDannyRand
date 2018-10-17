@@ -3,7 +3,6 @@ import json
 import os
 import random
 import re
-
 import praw
 
 async def check_comments(sub):
@@ -169,4 +168,7 @@ if __name__ == '__main__':
     from duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
     asyncio.run(async_main())
 else:
-    from did_you_mean_danny_rand.duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
+    from bot.duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
+    
+
+
