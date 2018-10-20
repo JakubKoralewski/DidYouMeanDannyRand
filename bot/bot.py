@@ -5,6 +5,10 @@ import random
 import re
 import praw
 import logging
+import sys
+from duplicate import is_comment_duplicate, save_duplicate, is_title_duplicate
+for p in sys.path:
+    print(p)
 
 # set up logging to file - see previous section for more details
 logging.basicConfig(level=logging.DEBUG,
@@ -196,8 +200,8 @@ class vars():
 
 if __name__ == '__main__':
     logging.info('file opened locally')
-    from duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
+    #from duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
     asyncio.run(async_main())
 else:
     logging.info('file imported')
-    from bot.duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
+    #from bot.duplicate import save_duplicate, is_comment_duplicate, is_title_duplicate
