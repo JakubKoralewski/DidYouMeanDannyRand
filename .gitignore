@@ -1,9 +1,9 @@
 /*/
 *.txt
 !tests/
-!bot/
-bot/*.txt
-bot/*/
+!src/
+src/*.txt
+src/*/
 tests/*/
 !.circleci
 commented.txt

@@ -5,10 +5,8 @@ import random
 import re
 import praw
 import logging
-import sys
 from duplicate import is_comment_duplicate, save_duplicate, is_title_duplicate
-for p in sys.path:
-    print(p)
+
 
 # set up logging to file - see previous section for more details
 logging.basicConfig(level=logging.DEBUG,
@@ -26,7 +24,8 @@ console.setFormatter(formatter)
 # add the handler to the root logger
 logging.getLogger('').addHandler(console)
 
-log_answer = lambda answer: logging.info(f'\n_______________________________________\nANSWER:\n {answer}\n_______________________________________')
+def log_answer(answer):
+    logging.info(f'\n____________________________________\nANSWER:\n {answer}\n_______________________________________')
 
 
 async def check_comments(sub):
@@ -35,7 +34,7 @@ async def check_comments(sub):
         if comment is None:
             logging.warning('comment is None')
             break
-        logging.info(f'checking {sub}')
+        #logging.info(f'checking {sub}')
 
         text = comment.body
         id = comment.id
@@ -62,12 +61,13 @@ async def check_comments(sub):
 
 
 def delete_quotes(text):
-    logging.info('deleting quotes')
+    #logging.info('deleting quotes')
     quotes = re.compile(r'(>.*\n)|(>.+$)|(>.+\n)')
     return re.sub(quotes, '', text)
 
+
 async def check_titles(sub):
-    logging.info('checking titles')
+    #logging.info('checking titles')
     for post in sub.stream.submissions(pause_after=1):
         if post is None:
             logging.warning('post is None')
@@ -77,7 +77,7 @@ async def check_titles(sub):
 
 
 async def title_search(post):
-    logging.info('searching title')
+    logging.info(f'searching title in {post.subreddit.display_name}')
 
     title = post.title
     id = post.id
@@ -130,13 +130,14 @@ async def find_iron_fist(**kwargs):
         return False
 
     logging.info(all_matches)
-    logging.info('\n\n'+ text)
+    logging.info('\n\n' + text)
 
     for match in all_matches:
         catch = match[0]
         quote = match[1]
-        ai_answer = f"Who is {quote.group(2)}?"
-
+        catched = quote.group(2)
+        ai_answer = [f"Who is {catched}?", f"{catched}?", "I don't recognize this person.", "Who are you talking about?", "There are many people of this name."]
+        ai_answer = random.choice(ai_answer)
         # Get random answer.
         i = random.randint(0, len(vars.answers)-1)
         quote = bold_quote(catch, quote[0])

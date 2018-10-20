@@ -1,10 +1,13 @@
-import bot.bot as bot
+"""
+TO-DO:
+1. Create a real test function, that will mock the input of a PRAW stream, test that with a few known results to assert tests.
+"""
 import pytest
 import asyncio
 import re
+import bot
 
 # runs only once before testing
-
 
 @pytest.fixture(scope="module")
 def vars():
